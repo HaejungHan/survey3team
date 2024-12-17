@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Survey Results</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<h1>Survey Results</h1>
+
+<!-- 설문 결과 표 -->
+<table border="1">
+    <thead>
+    <tr>
+        <th>Visit Frequency</th>
+        <th>Count</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- surveyResults 모델 데이터를 사용하여 결과 출력 -->
+    <tr th:each="entry : ${surveyResults}">
+        <td th:text="${entry.key}"></td> <!-- 방문 빈도 -->
+        <td th:text="${entry.value}"></td> <!-- 응답 수 -->
+    </tr>
+    </tbody>
+</table>
+
+<!-- Chart.js 차트를 사용하려면, 이 부분에 차트를 추가할 수도 있습니다 -->
+<canvas id="surveyChart" width="400" height="200"></canvas>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const surveyResults = [[${surveyResults}]];  // JSON 형태로 데이터 전달
+    console.log(surveyResults);
+    /*]]>*/
+
+    // surveyResults가 Map<String, Long> 형태라고 가정
+    // JavaScript에서 Chart.js에 사용할 데이터를 추출합니다.
+    const labels = Object.keys(surveyResults);  // Map의 key를 labels로 사용
+    const data = Object.values(surveyResults);  // Map의 value를 데이터로 사용
+
+    console.log(labels);
+    console.log(data);
+
+    // 원형 차트 그리기
+    const ctx = document.getElementById('surveyChart').getContext('2d');
+    const surveyChart = new Chart(ctx, {
+        type: 'pie',  // 원형 차트로 설정
+        data: {
+            labels: labels,  // X축 라벨 (여기서는 방문 빈도)
+            datasets: [{
+                label: 'Survey Results',  // 데이터셋의 이름
+                data: data,  // Y축 데이터 (각 방문 빈도에 대한 응답 수)
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.2)',  // 색상 1
+                    'rgba(153, 102, 255, 0.2)',  // 색상 2
+                    'rgba(255, 159, 64, 0.2)',  // 색상 3
+                    'rgba(54, 162, 235, 0.2)',  // 색상 4
+                    'rgba(255, 99, 132, 0.2)',  // 색상 5
+                    'rgba(255, 206, 86, 0.2)'   // 색상 6
+                ],
+                borderColor: [
+                    'rgba(75, 192, 192, 1)',  // 테두리 색상 1
+                    'rgba(153, 102, 255, 1)',  // 테두리 색상 2
+                    'rgba(255, 159, 64, 1)',   // 테두리 색상 3
+                    'rgba(54, 162, 235, 1)',   // 테두리 색상 4
+                    'rgba(255, 99, 132, 1)',   // 테두리 색상 5
+                    'rgba(255, 206, 86, 1)'    // 테두리 색상 6
+                ],
+                borderWidth: 1  // 테두리 두께
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        fontColor: '#000'  // 범례 텍스트 색상 설정
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.label + ': ' + tooltipItem.raw;  // Tooltip에 출력할 내용
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>

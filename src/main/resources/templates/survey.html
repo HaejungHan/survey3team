@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Survey Form</h1>
+<form action="/submit-survey" method="post">
+    <br>
+
+    <label for="status">Status:</label>
+    <select id="status" name="status" required>
+        <option value="학부생">학부생</option>
+        <option value="기타">기타</option>
+    </select>
+    <br>
+
+    <label for="major">Major:</label>
+    <select id="major" name="major" required>
+        <option value="인문">인문</option>
+        <option value="자연과학">자연과학</option>
+        <option value="예체능">예체능</option>
+    </select>
+    <br>
+
+    <label for="visitFrequency">How often do you visit the library?</label>
+    <select id="visitFrequency" name="visitFrequency" required>
+        <option value="매일">매일</option>
+        <option value="주 1-3회">주 1-3회</option>
+        <option value="월 1-3회">월 1-3회</option>
+        <option value="학기 1-3회">학기 1-3회</option>
+        <option value="연 1-3회">연 1-3회</option>
+        <option value="이용하지 않는다">이용하지 않는다</option>
+    </select>
+    <br>
+
+    <button type="submit">Submit</button>
+</form>
+</body>
+</html>
